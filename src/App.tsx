@@ -1,34 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { FC, useState } from 'react';
+import axios from 'axios';
+import { MyForm, FormValues } from './components/myForm/MyForm';
 
-function App() {
-  const [count, setCount] = useState(0)
+
+export const App: FC = () => {
+  const [isLogged, setIsLogged] = useState(false);
+
+  const handleSubmit = (values: FormValues) => {
+    axios.post(`https://ms-discord-upy5mhs63a-rj.a.run.app/auth/login`, values)
+      .then(({ data }) => {
+        console.log(data.token, 'data fetched from API');
+        setIsLogged(true);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <div id="app" data-theme="dark">
+      <section className="section">
+        <main className="main">
 
-export default App
+          {isLogged ? <h1 className="form__heading">Welcome, You are logged in!</h1>
+            : <MyForm onSubmit={handleSubmit} />}
+
+        </main>
+      </section>
+    </div>
+  );
+};

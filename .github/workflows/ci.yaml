@@ -1,0 +1,28 @@
+name: Continous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  linting:
+    name: Linting the code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm i
+      - name: Run linting
+        run: npm run lint
+
+  test:
+    name: Testing the code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm i
+      - name: Run tests
+        run: npm test
